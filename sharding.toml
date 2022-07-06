@@ -1,0 +1,19 @@
+[[shards]]
+name = "volador"
+idx = 0
+address = "localhost:8080"
+
+[[shards]]
+name = "crane"
+idx = 1
+address = "localhost:8081"
+
+[[shards]]
+name = "panda"
+idx = 2
+address = "localhost:8082"
+
+[[shards]]
+name = "whale"
+idx = 3
+address = "localhost:8083"
