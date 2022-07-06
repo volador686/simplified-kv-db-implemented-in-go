@@ -52,4 +52,4 @@ in my opinion, replications is used to cope with the situations like database de
 I designed the replication mechanism in another way:
 (replication with get operation should be designed into a cache, not a replication.)
 first, create a extra bucket to store all the operations applied to the main database
-second, defer func() { apply all the operations to the replica database }
+second, create func() { apply all the operations to the replica database }
