@@ -7,13 +7,19 @@ simplified key-value database implemented in go:
 一个简化的使用go语言实现的分布式的key-value数据库
 
 可以对数据库中新添加的数据增量更新到旧的备份中
+
 主要结构：
+
 a)config 用于定义配置文件结构体
+
 b)db用于创建与数据库的连接，定义数据库相关功能函数
+
 c)web 用于处理客户请求，对相关功能请求进行回应
+
 二、相关包/依赖项：
 a)net/http:（相关使用）
 i.功能监听
+
 func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	key := r.Form.Get("key")
@@ -55,6 +61,7 @@ i.读写功能的实现
 ii.增量更新的实现
 1.实现过程
 通过创建一个replicationbucket来存储需要进行复制的key-value对，当接受到进行复制的指令时，向对应的socket发送key-value对，并且删除已经发送的key-value对。
+
 func (d *Database) SendReplica(replica_addr string) (string, string) {
 	var res1 []byte
 	var res2 []byte
@@ -95,6 +102,7 @@ i.更改增量更新的变量，使其可以接受多个指定socket作为目的
 ii.可以对defaultbucket执行复制但是不删除，可以使指定数据库中的内容与目标数据库一致
 c)hash:（哈希）
 通过对提供的key进行哈希操作，从而确定对应相关操作的数据库，同时将用户提供的相关信息和操作类型重定向到相应数据库
+
 func (s *Server) redirect(shard int, w http.ResponseWriter, r *http.Request) {
 	url := "http://" + s.addrs[shard] + r.RequestURI
 	fmt.Fprintf(w, "redirecting from shard %d to shard %d (%q)\n", s.shardIdx, shard, url)
