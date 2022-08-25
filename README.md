@@ -136,28 +136,48 @@ goarch: amd64
 pkg: modules/benchmark
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
 BenchmarkWrite-12  49  24769037 ns/op  14965 B/op   116 allocs/op
+
 ii.随机读
 goos: linux
 goarch: amd64
 pkg: modules/benchmark
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
 BenchmarkRead-12  4815 233616 ns/op  14687 B/op	 112 allocs/op
+
 iii.结果分析
-从单位时间内对随机读写的次数比较可以得知，
+从单位时间内对随机读写的次数比较可以得知
+
 b)分析读写差距原因
+
 i.程序设计中所采用的boltDB数据库对读写方式的控制方式不同：
+
 在boltDB中，读操作支持并发，写操作不支持
+
 ii.每次进行写操作和读操作时，未采用缓存，造成速度下降
+
 c)可以改进的方式
+
 i.添加缓存（Todo）
+
 可以规定需要缓存的数据超过一定大小时，再将缓存中的数据写入数据库，从而平缓数据库的写入。
+
 但是，会因此增加程序复杂度，并且相较于不采用缓存，如果程序意外终止，缓存中的数据可能因此丢失，不同数据库的写入顺序/速度可能不同，还会因此造成数据库的不一致
+
 ii.增加数据库的数量
+
 在测试中数据库的数量为4（不包括备份数据库），在面对大量的数据时，可以适当增加数据库的数量，从而降低单一数据库写操作的数量，进而提升数据库的整体性能
+
 iii.换用读写速度更高的数据库
+
 可以换用读写速度更高的数据库（redis等）
+
 四、结语
+
 a)参考
+
 i.boltDB -- https://github.com/boltdb/bolt
+
 ii.go-curl -- https://github.com/idoubi/goz
+
 iii.implementation -- https://www.youtube.com/watch?v=EdPkmJrtTWQ
+
