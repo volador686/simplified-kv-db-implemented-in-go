@@ -1,7 +1,11 @@
 simplified key-value database implemented in go:
+
 介绍文档
+
 一、主要功能：
+
 一个简化的使用go语言实现的分布式的key-value数据库
+
 可以对数据库中新添加的数据增量更新到旧的备份中
 主要结构：
 a)config 用于定义配置文件结构体
@@ -10,7 +14,6 @@ c)web 用于处理客户请求，对相关功能请求进行回应
 二、相关包/依赖项：
 a)net/http:（相关使用）
 i.功能监听
-// GetHandler: handles read requests from the database.
 func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	key := r.Form.Get("key")
@@ -26,7 +29,6 @@ func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "shard = %d, current shard = %d, addr = %q, value = %q, error = %v\n", shard, s.shardIdx, s.addrs[shard], value, err)
 }
 
-// SetHandler: handles write request from the database.
 func (s *Server) SetHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	key := r.Form.Get("key")
