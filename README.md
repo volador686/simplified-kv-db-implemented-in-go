@@ -21,7 +21,7 @@ a)net/http:（相关使用）
 
 i.功能监听
 
-
+```
 func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 	
 	r.ParseForm()
@@ -37,6 +37,7 @@ func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "shard = %d, current shard = %d, addr = %q, value = %q, error = %v\n", shard, s.shardIdx, s.addrs[shard], value, err)
 }
+
 
 func (s *Server) SetHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
@@ -58,6 +59,7 @@ func (s *Server) ReplicaHandler(w http.ResponseWriter, r *http.Request) {
 	s.db.SendReplica(replica_addr)
 	fmt.Fprintf(w, "replica_addr = %v\n", replica_addr)
 }
+```
 b)boltDB:（数据库）
 i.读写功能的实现
 
