@@ -20,6 +20,7 @@ c)web 用于处理客户请求，对相关功能请求进行回应
 a)net/http:（相关使用）
 i.功能监听
 
+
 func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	key := r.Form.Get("key")
@@ -94,13 +95,21 @@ func (d *Database) SendReplica(replica_addr string) (string, string) {
 	return string(res1), string(res2)
 }
 2.通过这种方式实现增量更新的问题
+
 a)问题阐述
+
 i.以当前方式无法实现对多个数据库进行增量更新
+
 ii.可扩展性差
+
 b)改进方式（Todo）
+
 i.更改增量更新的变量，使其可以接受多个指定socket作为目的数据库
+
 ii.可以对defaultbucket执行复制但是不删除，可以使指定数据库中的内容与目标数据库一致
+
 c)hash:（哈希）
+
 通过对提供的key进行哈希操作，从而确定对应相关操作的数据库，同时将用户提供的相关信息和操作类型重定向到相应数据库
 
 func (s *Server) redirect(shard int, w http.ResponseWriter, r *http.Request) {
