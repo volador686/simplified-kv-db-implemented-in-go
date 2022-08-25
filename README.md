@@ -60,9 +60,13 @@ func (s *Server) ReplicaHandler(w http.ResponseWriter, r *http.Request) {
 }
 b)boltDB:（数据库）
 i.读写功能的实现
+
 1.实现过程
+
 ii.增量更新的实现
+
 1.实现过程
+
 通过创建一个replicationbucket来存储需要进行复制的key-value对，当接受到进行复制的指令时，向对应的socket发送key-value对，并且删除已经发送的key-value对。
 
 func (d *Database) SendReplica(replica_addr string) (string, string) {
@@ -131,17 +135,27 @@ func (s *Server) redirect(shard int, w http.ResponseWriter, r *http.Request) {
 三、随机读写测试：
 a)测试结果
 i.随机写
+
 goos: linux
+
 goarch: amd64
+
 pkg: modules/benchmark
+
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+
 BenchmarkWrite-12  49  24769037 ns/op  14965 B/op   116 allocs/op
+
 
 ii.随机读
 goos: linux
+
 goarch: amd64
+
 pkg: modules/benchmark
+
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+
 BenchmarkRead-12  4815 233616 ns/op  14687 B/op	 112 allocs/op
 
 iii.结果分析
