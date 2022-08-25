@@ -22,6 +22,7 @@ i.功能监听
 
 
 func (s *Server) GetHandler(w http.ResponseWriter, r *http.Request) {
+	
 	r.ParseForm()
 	key := r.Form.Get("key")
 
