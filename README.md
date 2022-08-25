@@ -70,7 +70,7 @@ ii.增量更新的实现
 1.实现过程
 
 通过创建一个replicationbucket来存储需要进行复制的key-value对，当接受到进行复制的指令时，向对应的socket发送key-value对，并且删除已经发送的key-value对。
-
+```
 func (d *Database) SendReplica(replica_addr string) (string, string) {
 	var res1 []byte
 	var res2 []byte
@@ -102,6 +102,7 @@ func (d *Database) SendReplica(replica_addr string) (string, string) {
 	})
 	return string(res1), string(res2)
 }
+```
 2.通过这种方式实现增量更新的问题
 
 a)问题阐述
@@ -119,7 +120,7 @@ ii.可以对defaultbucket执行复制但是不删除，可以使指定数据库�
 c)hash:（哈希）
 
 通过对提供的key进行哈希操作，从而确定对应相关操作的数据库，同时将用户提供的相关信息和操作类型重定向到相应数据库
-
+```
 func (s *Server) redirect(shard int, w http.ResponseWriter, r *http.Request) {
 	url := "http://" + s.addrs[shard] + r.RequestURI
 	fmt.Fprintf(w, "redirecting from shard %d to shard %d (%q)\n", s.shardIdx, shard, url)
@@ -134,6 +135,7 @@ func (s *Server) redirect(shard int, w http.ResponseWriter, r *http.Request) {
 
 	io.Copy(w, resp.Body)
 }
+```
 三、随机读写测试：
 a)测试结果
 i.随机写
