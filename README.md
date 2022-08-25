@@ -64,7 +64,42 @@ b)boltDB:（数据库）
 i.读写功能的实现
 
 1.实现过程
+```
+// SetKey sets the key to the requested value into the default database or returns an error
+func (d *Database) SetKey(key string, value []byte) error {
+	// original version: add key-value pair to the default bucket
+	// return d.db.Update(func(tx *bolt.Tx) error {
+	// 	b := tx.Bucket(defaultBucket)
+	// 	return b.Put([]byte(key), value)
+	// })
 
+	// new version: add key-value pair to the default/replica bucket
+	return d.db.Update(func(tx *bolt.Tx) error {
+		if err := (tx.Bucket(defaultBucket)).Put([]byte(key), value); err != nil {
+			return errors.New("default bucket not available")
+		}
+		return tx.Bucket(replicaBucket).Put([]byte(key), value)
+	})
+}
+
+// GetKey gets the value of the requested key from a default database
+// as for get, there is no need to change
+// because our replication is not for get/set use, it is only uesd to prevent database failure
+func (d *Database) GetKey(key string) ([]byte, error) {
+	var result []byte
+	err := d.db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(defaultBucket)
+		result = b.Get([]byte(key))
+		return nil
+	})
+
+	if err == nil {
+		return result, nil
+	}
+
+	return nil, err
+}
+```
 ii.增量更新的实现
 
 1.实现过程
